@@ -25,18 +25,19 @@ export class Frame extends Component {
     }
     
     onResize() {
-        this.width = window.innerWidth
-        this.height = window.innerHeight
+        this.properties.width.set(window.innerWidth)
+        this.properties.height.set(window.innerHeight)
 
-        if (this.canvas){
-            this.canvas.width = this.width
-            this.canvas.height = this.height
-        }
+        if (this.canvas === undefined) return
+        
+        this.canvas.width = this.properties.width.get()
+        this.canvas.height = this.properties.height.get()
+
     }
 
     constructor() {
         super()
-
+        this.draw = this.draw.bind(this)
         this.onResize()
 
         window.addEventListener("resize", this.onResize.bind(this));
@@ -44,14 +45,15 @@ export class Frame extends Component {
         document.addEventListener('mousedown', this.onMouseDown.bind(this));
         document.addEventListener('mouseenter', this.onMouseUpdate.bind(this));
         document.addEventListener('mouseleave', this.onMouseLeave.bind(this));
+
+        requestAnimationFrame(this.draw);
     }
 
     actualizePath(){}
 
     set setCanvas(canvas:HTMLCanvasElement){
         this.canvas = canvas
-        this.canvas!.width = this.width
-        this.canvas!.height = this.height
+        this.onResize()
     }
 
     get ctx(){
@@ -63,8 +65,8 @@ export class Frame extends Component {
         for (let component of this.childs){
             component.draw(this.ctx,{cursor:this.cursor,clicked:this.clicked})
         }
-        requestAnimationFrame( this.draw.bind(this) );
         this.clicked = false
+        requestAnimationFrame(this.draw);
     }
 
 }

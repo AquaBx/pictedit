@@ -5,16 +5,18 @@ let frame = new Frame()
 frame.setCanvas = document.querySelector("canvas")!
 
 let btn = new Button()
-btn._background_color = "#005FB8"
-btn._font_color = "#ffffff"
+btn.properties.background_color.set(0x005FB8)
+btn.properties.font_color.set(0xffffff)
 btn.innerText = "Salve"
-btn.x = 20
-btn.y = 20
-btn.width = 100
-btn.height = 36
-btn.rounding = [8]
-btn.onclick = (self) => {self.innerText =  self.innerText.split('').reverse().join('') }
-btn.onhover = (self) => {self._background_color = "#196ebf"}
-frame.add(btn)
+btn.properties.x.set(20)
+btn.properties.y.set(20)
+btn.properties.width.set(100)
+btn.properties.height.set(36)
+btn.properties.rounding.set([8])
 
-frame.draw()
+btn.onclick = (self) => {self.innerText =  self.innerText.split('').reverse().join('') }
+// btn.onhover = (self) => {self.properties.background_color.setTransition("#196ebf",1000)}
+btn.onhover = (self) => {self.properties.background_color.setTransition(0xff0000);}
+btn.actualizePath()
+
+frame.add(btn)
