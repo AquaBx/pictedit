@@ -15,8 +15,7 @@ btn.properties.height.set(36)
 btn.properties.rounding.set([8])
 
 btn.onclick = (self) => {self.innerText =  self.innerText.split('').reverse().join('') }
-// btn.onhover = (self) => {self.properties.background_color.setTransition("#196ebf",1000)}
-btn.onhover = (self) => {self.properties.background_color.setTransition("#ff0000");}
+btn.onhover = (self) => {self.properties.background_color.setTransition("#196ebf")}
 btn.actualizePath()
 
 frame.add(btn)
