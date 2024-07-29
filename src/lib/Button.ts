@@ -33,14 +33,14 @@ export class Button extends Component {
         else {
             this.properties.background_color.transitionDecrease();
         }
-        RenderingContext.fillStyle = "#" + this.properties.background_color.get().toString(16).padStart(6, '0');
+        RenderingContext.fillStyle = this.properties.background_color.get()
         RenderingContext.fill(this.path);
 
         RenderingContext.font = "400 16px 'Segoe UI'";
         RenderingContext.textAlign = "center";
         RenderingContext.textBaseline = "middle";
 
-        RenderingContext.fillStyle  = "#" + this.properties.font_color.get().toString(16).padStart(6, '0');
+        RenderingContext.fillStyle  = this.properties.font_color.get()
         RenderingContext.fillText(this.innerText, this.properties.x.get()+this.properties.width.get()/2, this.properties.y.get()+this.properties.height.get()/2);
         
     }
