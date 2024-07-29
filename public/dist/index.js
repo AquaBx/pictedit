@@ -8,7 +8,7 @@ var PropertyG = class {
 var PropertyTransitionG = class extends PropertyG {
   _target_value;
   _last = 0;
-  _duration = 100;
+  _duration = 20;
   set(value) {
     super.set(value);
     this._target_value = value;
@@ -191,7 +191,7 @@ btn.onclick = (self) => {
   self.innerText = self.innerText.split("").reverse().join("");
 };
 btn.onhover = (self) => {
-  self.properties.background_color.setTransition("#ff0000");
+  self.properties.background_color.setTransition("#196ebf");
 };
 btn.actualizePath();
 frame.add(btn);

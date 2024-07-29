@@ -16,7 +16,7 @@ abstract class PropertyG<T> {
 abstract class PropertyTransitionG<T> extends PropertyG<T> {
     protected _target_value : T|undefined
     protected _last:number=0
-    protected _duration:number = 100
+    protected _duration:number = 20
 
     set(value:T|undefined){
         super.set(value)
