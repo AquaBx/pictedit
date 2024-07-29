@@ -58,6 +58,30 @@ class PropertyNumberList extends PropertyTransitionG<number[]> {
     }
 }
 
+class PropertyHexa extends PropertyTransitionG<string> {
+    get() {
+        let c1 = String(this._base_value).padStart(6, '0')
+        let c2 = String(this._target_value).padStart(6, '0')
+
+        if (this._base_value === undefined) return "#ffffff"
+
+
+        let r1 = parseInt(c1.substr(1,2),16)
+        let g1 = parseInt(c1.substr(3,2),16)
+        let b1 = parseInt(c1.substr(5,2),16)
+
+        let r2 = parseInt(c2.substr(1,2),16)
+        let g2 = parseInt(c2.substr(3,2),16)
+        let b2 = parseInt(c2.substr(5,2),16)
+
+        let r = (r2 - r1) * this.getRatio() + r1
+        let g = (g2 - g1) * this.getRatio() + g1
+        let b = (b2 - b1) * this.getRatio() + b1
+
+        return `rgb(${r},${g},${b})`
+    }
+}
+
 class PropertyString extends PropertyG<string> {
     get() {
         return this._base_value || ""
@@ -65,8 +89,8 @@ class PropertyString extends PropertyG<string> {
 }
 
 export class Properties {
-    background_color = new PropertyNumber()
-    font_color = new PropertyNumber()
+    background_color = new PropertyHexa()
+    font_color = new PropertyHexa()
     width = new PropertyNumber()
     height = new PropertyNumber()
     x = new PropertyNumber()
