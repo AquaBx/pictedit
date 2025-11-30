@@ -3,18 +3,13 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
-		"build": "tsup",
-		"preview": "vite preview",
+		"dev": "bun run build && bun run preview",
+		"build": "bun build src/index.ts --outdir public/dist",
+		"preview": "bun public/index.html",
 		"test": "playwright test"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.45.3",
-		"typescript": "^5.5.4",
-		"vite": "^5.3.4"
+		"@playwright/test": "^1.57.0"
 	},
-	"type": "module",
-	"dependencies": {
-		"tsup": "^8.2.3"
-	}
+	"type": "module"
 }

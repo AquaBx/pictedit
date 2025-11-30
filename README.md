@@ -1,14 +1,11 @@
 Début de GUI sur du Canvas
 
-Pour build :
 ```bash
-# bun
+# Pour build :
 bun run build
-bun run dev
 
-# npm
-npm run build
-npm run dev
+# Pour build puis lancer
+bun run dev
 ```
 
 Pour l'instant il y a juste un bouton cliquable et qui a un hover pas beau.
