@@ -7,8 +7,26 @@ export class Button extends Component {
     onhover : Function = (self:this) => {}
     onclick : Function = (self:this) => {}
 
+    inside = false
+    clicked = false
+
     constructor() {
         super()
+    }
+
+    onMouseDown(e: MouseEvent) {
+        if (this.clicked) return
+        this.onclick(this)
+        this.clicked = true
+    }
+    onMouseLeave(e: MouseEvent) {
+        this.inside = false
+    }
+    onMouseUp(e: MouseEvent) {
+        this.clicked = false
+    }
+    onMouseUpdate(e: MouseEvent) {
+        this.inside = true
     }
 
     actualizePath() {
@@ -16,19 +34,15 @@ export class Button extends Component {
         this.path.roundRect(this.properties.x.get(), this.properties.y.get(), this.properties.width.get(), this.properties.height.get(), this.properties.rounding.get());
     }
 
-    isOver(RenderingContext : CanvasRenderingContext2D, GlobalContext:Object) : boolean {
-        return RenderingContext.isPointInPath(this.path, GlobalContext.cursor.x, GlobalContext.cursor.y)
+    isOver(RenderingContext : CanvasRenderingContext2D, x:number, y:number) : boolean {
+        return RenderingContext.isPointInPath(this.path, x, y)
     }
 
-    public draw(RenderingContext : CanvasRenderingContext2D, GlobalContext:Object){
+    public draw(RenderingContext : CanvasRenderingContext2D){
 
-        if (this.isOver(RenderingContext,GlobalContext)) {
+        if (this.inside) {
             this.onhover(this)
             this.properties.background_color.transitionIncrease();
-
-            if (GlobalContext.clicked) {
-                this.onclick(this)
-            }
         }
         else {
             this.properties.background_color.transitionDecrease();

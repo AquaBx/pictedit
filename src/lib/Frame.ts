@@ -3,27 +3,60 @@ import { Component } from "./Component"
 export class Frame extends Component {
     private canvas:HTMLCanvasElement|undefined
 
-    public cursor = {
+
+    selected : Component|undefined
+
+    public select(component:Component){
+        this.selected = component
+        console.log(this.selected)
+
+    }
+
+    onMouseUpdate(e:MouseEvent) {
+        this.selected?.onMouseUpdate(e)
+    }
+
+    onMouseLeave(e:MouseEvent) {
+        this.selected?.onMouseLeave(e)
+    }
+
+    public clicked = {
+        state: false,
         x:0,
         y:0
     }
 
-    public clicked = false
-
-    onMouseUpdate(e:MouseEvent) {
-        this.cursor.x = e.clientX
-        this.cursor.y = e.clientY
-    }
-
-    onMouseLeave(e:MouseEvent) {
-        this.cursor.x = -1
-        this.cursor.y = -1
-    }
-
     onMouseDown(e:MouseEvent) {
-        this.clicked = true
+        this.clicked.state = true
+        this.clicked.x = e.x
+        this.clicked.y = e.y
+
+        let to_be_reset = true
+
+        for (let component of this.childs) {
+            if ( component.isOver(this.ctx,this.clicked.x,this.clicked.y) ) {
+                if (this.clicked.state) {
+                    this.select(component)
+                    to_be_reset = false
+                } else {
+                    component.onhover()
+                }
+            }
+
+            component.draw(this.ctx)
+        }
+
+        this.clicked.state = false
+
+        if (to_be_reset) {this.selected = undefined}
+        this.selected?.onMouseDown(e)
+
     }
-    
+
+    onMouseUp(e:MouseEvent) {
+        this.selected?.onMouseUp(e)
+    }
+
     onResize() {
         this.properties.width.set(window.innerWidth)
         this.properties.height.set(window.innerHeight)
@@ -32,7 +65,12 @@ export class Frame extends Component {
         
         this.canvas.width = this.properties.width.get()
         this.canvas.height = this.properties.height.get()
+    }
 
+    isOver(){return true}
+
+    public add(child: Component) {
+        super.add(child)
     }
 
     constructor() {
@@ -45,6 +83,7 @@ export class Frame extends Component {
         document.addEventListener('mousedown', this.onMouseDown.bind(this));
         document.addEventListener('mouseenter', this.onMouseUpdate.bind(this));
         document.addEventListener('mouseleave', this.onMouseLeave.bind(this));
+        document.addEventListener('mouseup', this.onMouseUp.bind(this));
 
         requestAnimationFrame(this.draw);
     }
@@ -62,11 +101,11 @@ export class Frame extends Component {
 
     public draw(){
         this.ctx.clearRect(0, 0, this.canvas!.width, this.canvas!.height);
-        for (let component of this.childs){
-            component.draw(this.ctx,{cursor:this.cursor,clicked:this.clicked})
+
+        for (let component of this.childs) {
+            component.draw(this.ctx)
         }
-        this.clicked = false
+        
         requestAnimationFrame(this.draw);
     }
-
 }
